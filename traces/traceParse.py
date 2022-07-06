@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/python3
 
 import re, os 
 import string
@@ -14,29 +14,29 @@ tracefile_filename = sys.argv[1][0:len(sys.argv[1])-3]
 outfile = open(tracefile_filename,"w")
 temp_trace = tracefile_filename + ".temp"
 
-zcat_cmd = "zcat";
+zcat_cmd = "zcat"#;
 # accomodate OSX
 if os.uname()[0] == "Darwin":
-	print "Detected OSX, using gzcat..."
+	print ("Detected OSX, using gzcat...")
 	zcat_cmd = "gzcat"
 
 if not os.path.exists(gztrace_filename):
-  print "Could not find gzipped tracefile either"
+  print ("Could not find gzipped tracefile either")
   quit()
 else:
-  print "Unzipping gz trace...",
+  print ("Unzipping gz trace...")  #,
   os.system("%s %s > %s" % (zcat_cmd, gztrace_filename, temp_trace))
 if not os.path.exists(tracefile_filename):
-  print "FAILED"
+  print ("FAILED")
   quit()
 else:
-  print "OK"
+  print ("OK")
 
-print "Parsing ",
+print ("Parsing ") #,
 tracefile = open(temp_trace,"r")
 
 if tracefile_filename.startswith("k6"):
-  print "k6 trace ..."
+  print ("k6 trace ...")
   linePattern = re.compile(r'(0x[0-9A-F]+)\s+([A-Z_]+)\s+([0-9.,]+)\s+(.*)')
   for line in tracefile:
     searchResult = linePattern.search(line)
@@ -54,12 +54,12 @@ if tracefile_filename.startswith("k6"):
             outfile.write("%s %s %s\n" % (address,command,time)) 
             
 elif tracefile_filename.startswith("mase"):
-  print "mase trace ...",
-  os.system("cp %s %s"%(temp_trace, tracefile_filename));
-  print "OK"
+  print ("mase trace ...") #,
+  os.system("cp %s %s"%(temp_trace, tracefile_filename))#;
+  print ("OK")
       
 else:
-  print "Unknown trace file!!!"
+  print ("Unknown trace file!!!")
   quit()
 
-os.system("rm %s" % temp_trace);
+os.system("rm %s" % temp_trace)#;
