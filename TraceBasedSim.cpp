@@ -35,6 +35,10 @@
 //File to run a trace-based simulation
 //
 
+// ## 7/14 code review by hmchoi
+// ## because i'm not used to cpp codes, i will leave some comment for library functions or syntax.
+// ## this file is most high part of hierachcy, so it will describe rough flow of simulator.
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -50,12 +54,17 @@
 
 
 using namespace DRAMSim;
+
+// ## namespace DRAMSim is the core object in this simulation.
+
 using namespace std;
 
 //#define RETURN_TRANSACTIONS 1
 
 #ifndef _SIM_
 int SHOW_SIM_OUTPUT = 1;
+
+// ## declare output file stream
 ofstream visDataOut; //mostly used in MemoryController
 
 #ifdef RETURN_TRANSACTIONS
@@ -66,6 +75,9 @@ class TransactionReceiver
 		map<uint64_t, list<uint64_t> > pendingWriteRequests; 
 
 	public: 
+		
+		// ## before reviewing this part, I will review transaction part first.
+		
 		void add_pending(const Transaction &t, uint64_t cycle)
 		{
 			// C++ lists are ordered, so the list will always push to the back and
